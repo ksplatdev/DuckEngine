@@ -7,6 +7,7 @@ import Texture from '../texture/texture';
 import Scene from '../scene';
 import PhysicsBody from '../physics/physicsBody';
 import uniqueID from '../../utils/uniqueID';
+import Color from '../renderer/models/color';
 
 /**
  * @class GameObject
@@ -61,7 +62,7 @@ export default class GameObject<textureType extends Duck.Types.Texture.Type>
 	 * @param {number} w Width
 	 * @param {number} h Height
 	 * @param {number} r Radius
-	 * @param {string} fillColor Fill color or Texture instance
+	 * @param {Texture<textureType>} texture Texture instance
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
 	 * @since 1.0.0-beta
@@ -144,6 +145,6 @@ export default class GameObject<textureType extends Duck.Types.Texture.Type>
 	 * @since 1.0.0-beta
 	 */
 	public setFillColor(fillColor: string) {
-		(this.texture.texture as string) = fillColor;
+		(this.texture.texture as unknown as Color).value = fillColor;
 	}
 }

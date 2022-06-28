@@ -1,6 +1,8 @@
 import { Duck } from '../..';
+import hexNumberToString from '../../utils/hexNumberToString';
 import uniqueID from '../../utils/uniqueID';
 import Vector2 from '../math/vector2';
+import Color from '../renderer/models/color';
 
 export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	/**
@@ -30,14 +32,14 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	/**
 	 * @memberof TextureBase
 	 * @description The texture itself, can be an image or color
-	 * @type HTMLImageElement | string
+	 * @type HTMLImageElement | Color
 	 * @since 2.1.0
 	 */
 	public texture: type extends 'image'
 		? HTMLImageElement
 		: type extends 'either'
-		? string | HTMLImageElement
-		: string;
+		? Color | HTMLImageElement
+		: Color;
 
 	/**
 	 * @memberof Texture
@@ -51,6 +53,7 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	 * @constructor Texture
 	 * @description Creates an image texture
 	 * @param {'image'} type Texture type
+	 * @param {Duck.Types.Texture.DataType} dataType Texture DataType, ex: sheet, base, atlas
 	 * @param {HTMLImageElement} texture Texture source
 	 * @param {number} w Width of texture
 	 * @param {number} h Height of texture
@@ -68,7 +71,8 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	 * @constructor Texture
 	 * @description Creates a color texture
 	 * @param {'color'} type Texture type
-	 * @param {string} texture Texture source
+	 * @param {Duck.Types.Texture.DataType} dataType Texture DataType, ex: sheet, base, atlas
+	 * @param {Color} texture Texture source
 	 * @param {number} w Width of texture
 	 * @param {number} h Height of texture
 	 * @since 2.1.0
@@ -76,7 +80,7 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	constructor(
 		type: 'color',
 		dataType: Duck.Types.Texture.DataType,
-		texture: string,
+		texture: Color,
 		w: number,
 		h: number
 	);
@@ -85,7 +89,8 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	 * @constructor Texture
 	 * @description Creates a color or image texture
 	 * @param {'either'} type Texture type
-	 * @param {HTMLImageElement | string} texture Texture source
+	 * @param {Duck.Types.Texture.DataType} dataType Texture DataType, ex: sheet, base, atlas
+	 * @param {HTMLImageElement | Color | string} texture Texture source
 	 * @param {number} w Width of texture
 	 * @param {number} h Height of texture
 	 * @since 2.1.0
@@ -93,7 +98,7 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	constructor(
 		type: 'either',
 		dataType: Duck.Types.Texture.DataType,
-		texture: HTMLImageElement | string,
+		texture: HTMLImageElement | Color | string,
 		w: number,
 		h: number
 	);
@@ -102,7 +107,8 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	 * @constructor Texture
 	 * @description Creates a texture
 	 * @param {Duck.Types.Texture.Type} type Texture type
-	 * @param {HTMLImageElement:string} texture Texture source
+	 * @param {Duck.Types.Texture.DataType} dataType Texture DataType, ex: sheet, base, atlas
+	 * @param {HTMLImageElement | Color} texture Texture source
 	 * @param {number} w Width of texture
 	 * @param {number} h Height of texture
 	 * @since 2.1.0
@@ -113,8 +119,8 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 		texture: type extends 'image'
 			? HTMLImageElement
 			: type extends 'either'
-			? string | HTMLImageElement
-			: string,
+			? Color | HTMLImageElement
+			: Color,
 		w: number,
 		h: number
 	) {
@@ -168,21 +174,24 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	 */
 	public setFillColor(color: string | number) {
 		if (this.type === 'color') {
-			(this.texture as string | number) = color;
+			typeof color === 'number'
+				? (color = hexNumberToString(color))
+				: color;
+			(this.texture as Color).value = color;
 		}
 	}
 
 	/**
 	 * @memberof TextureBase
 	 * @description Creates a new TextureBase instance from a color
-	 * @param {string} color Color
+	 * @param {Color} color Color
 	 * @param {number} w Width
 	 * @param {number} h Height
 	 * @static
 	 * @returns {TextureBase<'color'>}
 	 * @since 2.1.0
 	 */
-	public static fromColor(color: string, w: number, h: number) {
+	public static fromColor(color: Color, w: number, h: number) {
 		return new TextureBase<'color'>('color', 'base', color, w, h);
 	}
 
@@ -206,14 +215,18 @@ export default class TextureBase<type extends Duck.Types.Texture.Type> {
 	/**
 	 * @memberof TextureBase
 	 * @description Creates a new TextureBase instance from a color or an image path
-	 * @param {string} fillColorOrIMGPath Color or Image path
+	 * @param {string | Color} fillColorOrIMGPath Color or Image path
 	 * @param {number} w Width
 	 * @param {number} h Height
 	 * @static
 	 * @returns {TextureBase<'either'>}
 	 * @since 2.1.0
 	 */
-	public static fromEither(fillColorOrIMGPath: string, w: number, h: number) {
+	public static fromEither(
+		fillColorOrIMGPath: string | Color,
+		w: number,
+		h: number
+	) {
 		return new TextureBase<'either'>(
 			'either',
 			'base',

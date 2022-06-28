@@ -4,6 +4,7 @@ import Game from '../../game';
 import TextureBase from '../../texture/textureBase';
 import TextureSheet from '../../texture/textureSheet';
 import BaseRenderer from '../baseRenderer';
+import Color from '../models/color';
 import { BlendModes } from './const/blendModes';
 import RendererPipeline from './pipeline/rendererPipeline';
 
@@ -160,21 +161,21 @@ export default class CanvasRenderer extends BaseRenderer {
 	/**
 	 * @memberof CanvasRenderer
 	 * @description Sets the fillStyle using this.ctx.fillStyle =
-	 * @param {string} color Color to set to
+	 * @param {Color} color Color to set to
 	 * @since 2.1.0
 	 */
-	public setFillColor(color: string) {
-		this.ctx.fillStyle = color;
+	public setFillColor(color: Color) {
+		this.ctx.fillStyle = color.value;
 	}
 
 	/**
 	 * @memberof CanvasRenderer
 	 * @description Sets the strokeStyle using this.ctx.fillStyle =
-	 * @param {string} color Color to set to
+	 * @param {Color} color Color to set to
 	 * @since 2.1.0
 	 */
-	public setStrokeColor(color: string) {
-		this.ctx.strokeStyle = color;
+	public setStrokeColor(color: Color) {
+		this.ctx.strokeStyle = color.value;
 	}
 
 	/**
@@ -248,10 +249,10 @@ export default class CanvasRenderer extends BaseRenderer {
 	 * @param {number} y Y position
 	 * @param {number} w Width of rect
 	 * @param {number} h Height of rect
-	 * @param {string} color Color to fill rect with
+	 * @param {Color} color Color to fill rect with
 	 * @since 2.1.0
 	 */
-	public drawRect(x: number, y: number, w: number, h: number, color: string) {
+	public drawRect(x: number, y: number, w: number, h: number, color: Color) {
 		this.setFillColor(color);
 		this.ctx.fillRect(x, y, w, h);
 	}
@@ -262,14 +263,14 @@ export default class CanvasRenderer extends BaseRenderer {
 	 * @param {number} x X position
 	 * @param {number} y Y position
 	 * @param {number} r Radius of circle
-	 * @param {string} color Color to fill circle with
+	 * @param {Color} color Color to fill circle with
 	 * @since 2.1.0
 	 */
-	public drawCircle(x: number, y: number, r: number, color: string) {
+	public drawCircle(x: number, y: number, r: number, color: Color) {
 		this.setFillColor(color);
 		this.ctx.beginPath();
 		this.ctx.arc(x, y, r, 0, 2 * Math.PI, false);
-		this.ctx.fillStyle = color;
+		this.setFillColor(color);
 		this.ctx.fill();
 	}
 
@@ -281,7 +282,7 @@ export default class CanvasRenderer extends BaseRenderer {
 	 * @param {number} w Width of roundRect
 	 * @param {number} h Height of roundRect
 	 * @param {number} r Radius of roundRect
-	 * @param {string} color Color to fill roundRect with
+	 * @param {Color} color Color to fill roundRect with
 	 * @since 2.1.0
 	 */
 	public drawRoundRect(
@@ -290,7 +291,7 @@ export default class CanvasRenderer extends BaseRenderer {
 		w: number,
 		h: number,
 		r: number,
-		color: string
+		color: Color
 	) {
 		if (w < 2 * r) r = w / 2;
 		if (h < 2 * r) r = h / 2;

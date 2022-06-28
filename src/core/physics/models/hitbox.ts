@@ -8,6 +8,7 @@ import Scene from '../../scene';
 import hitboxFaceIntersect from '../utils/hitboxFaceIntersect';
 import PhysicsBody from '../physicsBody';
 import rectToRectIntersect from '../utils/rectToRectIntersect';
+import Color from '../../renderer/models/color';
 
 /**
  * @class Hitbox
@@ -83,10 +84,10 @@ export default class Hitbox implements Duck.Types.Renderable {
 	/**
 	 * @memberof Hitbox
 	 * @description The debug color of the Hitbox, determines if the visibility of the hitbox
-	 * @type string | undefined
+	 * @type Color | undefined
 	 * @since
 	 */
-	public debugColor: string | undefined;
+	public debugColor: Color | undefined;
 
 	/**
 	 * @memberof Hitbox
@@ -130,7 +131,7 @@ export default class Hitbox implements Duck.Types.Renderable {
 	 * @param {PhysicsBody<Duck.Types.Texture.Type>} physicsObject The PhysicsBody that the Hitbox is attached to
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
-	 * @param {string|undefined} [debugColor=undefined] The debugColor of the Hitbox
+	 * @param {Color|undefined} [debugColor=undefined] The debugColor of the Hitbox
 	 */
 	constructor(
 		position: Vector2,
@@ -140,7 +141,7 @@ export default class Hitbox implements Duck.Types.Renderable {
 		physicsObject: PhysicsBody<Duck.Types.Texture.Type>,
 		game: Game,
 		scene: Scene,
-		debugColor?: string
+		debugColor?: Color
 	) {
 		this.id = uniqueID();
 		this.position = position;
@@ -208,7 +209,8 @@ export default class Hitbox implements Duck.Types.Renderable {
 	 * @since 2.0.0
 	 */
 	public setDebugColor(debugColor: string, visible = true) {
-		this.debugColor = debugColor;
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		this.debugColor!.value = debugColor;
 		this.visible = visible;
 	}
 

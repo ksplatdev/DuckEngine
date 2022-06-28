@@ -48,6 +48,7 @@ import AnimationFrameClass from './core/animation/animationFrame';
 import AnimationManagerClass from './core/animation/animationManager';
 import AnimationStateClass from './core/animation/animationState';
 import StateMachineClass from './core/animation/stateMachine';
+import ColorClass from './core/renderer/models/color';
 
 // main
 
@@ -165,6 +166,7 @@ export namespace Duck {
 			export const DisplayList = DisplayListClass;
 			export const PhysicsList = PhysicsListClass;
 			export const Texture = TextureClass;
+			export const Color = ColorClass;
 		}
 
 		export namespace Map {
@@ -278,6 +280,7 @@ export namespace Duck {
 			export type PhysicsList = PhysicsListClass;
 			export type Texture<t extends Duck.Types.Texture.Type> =
 				TextureClass<t>;
+			export type Color = ColorClass;
 		}
 
 		export namespace Map {

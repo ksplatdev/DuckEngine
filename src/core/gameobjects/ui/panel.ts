@@ -4,6 +4,7 @@ import Game from '../../game';
 import Texture from '../../texture/texture';
 import Scene from '../../scene';
 import UI from './ui';
+import Color from '../../renderer/models/color';
 
 export default class Panel extends UI<'either'> {
 	constructor(
@@ -13,7 +14,7 @@ export default class Panel extends UI<'either'> {
 		w: number,
 		h: number,
 		r: number,
-		textureKeyOrColor: string,
+		textureKeyOrColor: string | Color,
 		game: Game,
 		scene: Scene
 	) {
@@ -35,7 +36,7 @@ export default class Panel extends UI<'either'> {
 		if (this.game.renderer.ctx) {
 			switch (this.shape) {
 				case 'circle':
-					if (typeof this.texture.texture === 'string') {
+					if (this.texture.texture instanceof Color) {
 						this.game.renderer.drawCircle(
 							this.position.x,
 							this.position.y,
@@ -46,7 +47,7 @@ export default class Panel extends UI<'either'> {
 					break;
 
 				case 'rect':
-					if (typeof this.texture.texture === 'string') {
+					if (this.texture.texture instanceof Color) {
 						this.game.renderer.drawRect(
 							this.position.x,
 							this.position.y,
@@ -58,7 +59,7 @@ export default class Panel extends UI<'either'> {
 					break;
 
 				case 'roundrect':
-					if (typeof this.texture.texture === 'string') {
+					if (this.texture.texture instanceof Color) {
 						this.game.renderer.drawRoundRect(
 							this.position.x,
 							this.position.y,
@@ -71,13 +72,13 @@ export default class Panel extends UI<'either'> {
 					break;
 
 				case 'sprite':
-					if (typeof this.texture.texture !== 'string') {
+					if (this.texture.texture instanceof HTMLImageElement) {
 						this.game.renderer.drawSprite(
 							this.position.x,
 							this.position.y,
 							this.w,
 							this.h,
-							this.texture.texture as unknown as Texture<'image'>
+							this.texture as unknown as Texture<'image'>
 						);
 					}
 					break;

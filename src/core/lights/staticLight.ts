@@ -5,6 +5,7 @@ import Game from '../game';
 import GameObject from '../gameobjects/gameObject';
 import Texture from '../texture/texture';
 import Scene from '../scene';
+import Color from '../renderer/models/color';
 
 /**
  * @class StaticLight
@@ -14,7 +15,7 @@ import Scene from '../scene';
  * @since 1.0.0-beta
  */
 export default class StaticLight extends GameObject<'color'> {
-	protected color: string;
+	protected color: Color;
 	protected alpha: Duck.Types.Helper.AlphaRange;
 
 	/**
@@ -23,7 +24,7 @@ export default class StaticLight extends GameObject<'color'> {
 	 * @param {number} x X position
 	 * @param {number} y Y position
 	 * @param {number} r Radius
-	 * @param {string} fillColor Color
+	 * @param {Color} color Color
 	 * @param {Duck.Types.Helper.AlphaRange} alpha Alpha
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
@@ -33,7 +34,7 @@ export default class StaticLight extends GameObject<'color'> {
 		x: number,
 		y: number,
 		r: number,
-		fillColor: string,
+		color: Color,
 		alpha: Duck.Types.Helper.AlphaRange,
 		game: Game,
 		scene: Scene
@@ -45,7 +46,7 @@ export default class StaticLight extends GameObject<'color'> {
 			0,
 			0,
 			r,
-			Texture.fromColor(fillColor, r, r),
+			Texture.fromColor(color, r, r),
 			game,
 			scene
 		);
@@ -56,10 +57,13 @@ export default class StaticLight extends GameObject<'color'> {
 		this.visible = true;
 		this.zIndex = 2;
 
-		this.color = fillColor;
+		this.color = color;
 
 		// convert all colors to RGBA
-		this.color = convertColorToRGBA(this.color, this.alpha);
+		this.color.value = convertColorToRGBA(
+			this.color.value as string,
+			this.alpha
+		);
 
 		this.texture.texture = this.color;
 	}
@@ -98,6 +102,6 @@ export default class StaticLight extends GameObject<'color'> {
 		color: string,
 		alpha: Duck.Types.Helper.AlphaRange
 	) {
-		this.color = convertColorToRGBA(color, alpha);
+		this.color.value = convertColorToRGBA(color, alpha);
 	}
 }

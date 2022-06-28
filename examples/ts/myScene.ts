@@ -22,8 +22,19 @@ export default class MainScene extends DuckEngine.Scene {
 
 	public create() {
 		// gameobjects
-		this.myRect = this.add.gameobject.rect(0, 0, 15, 15, '#ffffff');
-		this.myCircle = this.add.gameobject.circle(50, 50, 10, '#ffffff');
+		this.myRect = this.add.gameobject.rect(
+			0,
+			0,
+			15,
+			15,
+			this.add.color('#ffffff')
+		);
+		this.myCircle = this.add.gameobject.circle(
+			50,
+			50,
+			10,
+			this.add.color('#ffffff')
+		);
 
 		this.gameObjects = this.add.group<
 			Duck.TypeClasses.GameObjects.GameObject<Duck.Types.Texture.Type>

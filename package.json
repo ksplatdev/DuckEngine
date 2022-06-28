@@ -1,6 +1,6 @@
 {
 	"name": "duckengine",
-	"version": "2.1.0",
+	"version": "3.0.0-dev",
 	"description": "A 2D Game Engine for the web.",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",

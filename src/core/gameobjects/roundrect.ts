@@ -4,6 +4,7 @@ import Texture from '../texture/texture';
 import Scene from '../scene';
 
 import GameObject from './gameObject';
+import Color from '../renderer/models/color';
 
 /**
  * @class RoundRect
@@ -19,7 +20,7 @@ export default class RoundRect extends GameObject<'color'> {
 	 * @param {number} w Width of RoundRect
 	 * @param {number} h Height of RoundRect
 	 * @param {number} r Radius of RoundRect
-	 * @param {string} fillColor Fill Color of RoundRect
+	 * @param {Color} color Color of RoundRect
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
 	 * @since 1.0.0-beta
@@ -30,7 +31,7 @@ export default class RoundRect extends GameObject<'color'> {
 		w: number,
 		h: number,
 		r: number,
-		fillColor: string,
+		color: Color,
 		game: Game,
 		scene: Scene
 	) {
@@ -41,7 +42,7 @@ export default class RoundRect extends GameObject<'color'> {
 			w,
 			h,
 			r,
-			Texture.fromColor(fillColor, w, h),
+			Texture.fromColor(color, w, h),
 			game,
 			scene
 		);

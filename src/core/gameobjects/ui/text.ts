@@ -4,6 +4,7 @@ import Game from '../../game';
 import Texture from '../../texture/texture';
 import Scene from '../../scene';
 import UI from './ui';
+import Color from '../../renderer/models/color';
 
 /**
  * @class Text
@@ -21,6 +22,9 @@ export default class Text extends UI<'color'> {
 	 */
 	public text: string;
 	protected config: Duck.Types.UI.Text.Config;
+
+	public color: Color;
+	public strokeColor: Color;
 
 	/**
 	 * @constructor Text
@@ -44,7 +48,7 @@ export default class Text extends UI<'color'> {
 			0,
 			0,
 			0,
-			Texture.fromColor(text, 0, 0),
+			Texture.fromColor(new Color(text), 0, 0),
 			game,
 			scene
 		);
@@ -65,6 +69,19 @@ export default class Text extends UI<'color'> {
 		});
 
 		this.zIndex = Duck.Layers.Rendering.zIndex.text;
+
+		this.color = new Color(
+			this.config.styles.fillColor || '#000000',
+			this.config.styles.strokeColor
+				? this.config.styles.strokeColor
+				: '#000000',
+			this.config.styles.strokeWidth ? this.config.styles.strokeWidth : 0
+		);
+		this.strokeColor = new Color(
+			this.config.styles.strokeColor
+				? this.config.styles.strokeColor
+				: '#000000'
+		);
 	}
 
 	/**
@@ -79,12 +96,11 @@ export default class Text extends UI<'color'> {
 			this.game.renderer.setLineWidth(
 				this.config.styles.strokeWidth || 1
 			);
-			this.game.renderer.setStrokeColor(
-				this.config.styles.strokeColor || '#000'
-			);
-			this.game.renderer.setFillColor(
-				this.config.styles.fillColor || '#000'
-			);
+			if (this.color.stroke) {
+				this.game.renderer.setStrokeColor(this.strokeColor);
+			}
+
+			this.game.renderer.setFillColor(this.color);
 
 			if (this.config.method === 'draw') {
 				this.game.renderer.drawText(

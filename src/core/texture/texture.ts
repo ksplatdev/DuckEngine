@@ -1,5 +1,6 @@
 import { Duck } from '../..';
 import TextureBase from './textureBase';
+import Color from '../renderer/models/color';
 
 /**
  * @class Texture
@@ -16,7 +17,7 @@ export default class Texture<
 	 * @constructor Texture
 	 * @description Creates a texture
 	 * @param {Duck.Types.Texture.Type} type Texture type
-	 * @param {HTMLImageElement:string} texture Texture source
+	 * @param {HTMLImageElement | Color} texture Texture source
 	 * @param {number} w Width of texture
 	 * @param {number} h Height of texture
 	 * @since 2.0.0
@@ -26,15 +27,15 @@ export default class Texture<
 		texture: type extends 'image'
 			? HTMLImageElement
 			: type extends 'either'
-			? string | HTMLImageElement
-			: string,
+			? Color | HTMLImageElement
+			: Color,
 		w: number,
 		h: number
 	) {
 		if (type === 'image') {
 			super('image', 'base', texture as HTMLImageElement, w, h);
 		} else if (type === 'color') {
-			super('color', 'base', texture as string, w, h);
+			super('color', 'base', texture as Color, w, h);
 		} else {
 			super('either', 'base', texture, w, h);
 		}

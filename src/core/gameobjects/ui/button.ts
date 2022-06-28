@@ -7,6 +7,7 @@ import Text from './text';
 import Texture from '../../texture/texture';
 import EVENTS from '../../events/events';
 import UI from './ui';
+import Color from '../../renderer/models/color';
 
 /**
  * @class Button
@@ -49,7 +50,7 @@ export default class Button extends UI<'either'> {
 	 * @param {number} w Width
 	 * @param {number} h Height
 	 * @param {number} r Radius
-	 * @param {string} fillColorOrIMGPath Fill Color or Image path of the button
+	 * @param {string | Color} fillColorOrIMGPath Color or Image path of the button
 	 * @param {Text} text Text instance to render on top of the button
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
@@ -62,7 +63,7 @@ export default class Button extends UI<'either'> {
 		w: number,
 		h: number,
 		r: number,
-		fillColorOrIMGPath: string,
+		fillColorOrIMGPath: string | Color,
 		text: Text,
 		game: Game,
 		scene: Scene
@@ -204,7 +205,7 @@ export default class Button extends UI<'either'> {
 						this.position.y,
 						this.w,
 						this.h,
-						this.texture.texture as string
+						this.texture.texture as unknown as Color
 					);
 					break;
 
@@ -215,7 +216,7 @@ export default class Button extends UI<'either'> {
 						this.w,
 						this.h,
 						this.r,
-						this.texture.texture as string
+						this.texture.texture as unknown as Color
 					);
 					break;
 

@@ -4,6 +4,7 @@ import Game from '../../game';
 import Texture from '../../texture/texture';
 import Scene from '../../scene';
 import GameObject from '../gameObject';
+import Color from '../../renderer/models/color';
 
 /**
  * @class CanvasModulate
@@ -20,7 +21,7 @@ export default class CanvasModulate extends GameObject<'color'> {
 	 * @param {number} y Y position
 	 * @param {number} w Width
 	 * @param {number} h Height
-	 * @param {string} fillColor Color to fill the CanvasModulate with
+	 * @param {Color} color Color to fill the CanvasModulate with
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
 	 */
@@ -29,7 +30,7 @@ export default class CanvasModulate extends GameObject<'color'> {
 		y: number,
 		w: number,
 		h: number,
-		fillColor: string,
+		color: Color,
 		game: Game,
 		scene: Scene
 	) {
@@ -40,7 +41,7 @@ export default class CanvasModulate extends GameObject<'color'> {
 			w,
 			h,
 			0,
-			Texture.fromColor(fillColor, w, h),
+			Texture.fromColor(color, w, h),
 			game,
 			scene
 		);

@@ -6,6 +6,7 @@ import clamp from '../../math/clamp';
 import Vector2 from '../../math/vector2';
 import Texture from '../../texture/texture';
 import Scene from '../../scene';
+import Color from '../../renderer/models/color';
 
 /**
  * @class Particle
@@ -26,15 +27,15 @@ export default class Particle extends GameObject<'either'> {
 	/**
 	 * @memberof Particle
 	 * @description The original fill color or img path of the Particle
-	 * @type Vector2
+	 * @type string | Color
 	 * @since 2.0.0
 	 */
-	public originalFillColorOrIMGPath: string;
+	public originalFillColorOrIMGPath: string | Color;
 
 	/**
 	 * @memberof Particle
 	 * @description The age of the particle in seconds
-	 * @property
+	 * @type number
 	 * @since 1.0.0
 	 */
 	public age: number;
@@ -46,7 +47,7 @@ export default class Particle extends GameObject<'either'> {
 	 * @param {number} w Width of the particle
 	 * @param {number} h Height of the particle
 	 * @param {number} r Radius of the particle
-	 * @param {string} fillColorOrIMGPath Color to fill the particle with, can be an image path
+	 * @param {string | Color} fillColorOrIMGPath String path or Color to fill the particle with, can be an image path
 	 * @param {Game} game Game instance
 	 * @param {Scene} scene Scene instance
 	 * @since 1.0.0-beta
@@ -56,7 +57,7 @@ export default class Particle extends GameObject<'either'> {
 		w: number,
 		h: number,
 		r: number,
-		fillColorOrIMGPath: string,
+		fillColorOrIMGPath: string | Color,
 		game: Game,
 		scene: Scene
 	) {
@@ -105,7 +106,7 @@ export default class Particle extends GameObject<'either'> {
 						this.position.x,
 						this.position.y,
 						this.r,
-						this.texture.texture as string
+						this.texture.texture as unknown as Color
 					);
 					break;
 
@@ -115,7 +116,7 @@ export default class Particle extends GameObject<'either'> {
 						this.position.y,
 						this.w,
 						this.h,
-						this.texture.texture as string
+						this.texture.texture as unknown as Color
 					);
 					break;
 
@@ -126,7 +127,7 @@ export default class Particle extends GameObject<'either'> {
 						this.w,
 						this.h,
 						this.r,
-						this.texture.texture as string
+						this.texture.texture as unknown as Color
 					);
 					break;
 

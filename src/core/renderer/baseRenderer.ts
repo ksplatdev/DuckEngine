@@ -1,6 +1,7 @@
 import Game from '../game';
 import TextureBase from '../texture/textureBase';
 import { BlendModes } from './canvas/const/blendModes';
+import Color from './models/color';
 
 export default abstract class BaseRenderer {
 	public game: Game;
@@ -15,16 +16,16 @@ export default abstract class BaseRenderer {
 		y: number,
 		w: number,
 		h: number,
-		color: string
+		color: Color
 	): void;
-	abstract drawCircle(x: number, y: number, r: number, color: string): void;
+	abstract drawCircle(x: number, y: number, r: number, color: Color): void;
 	abstract drawRoundRect(
 		x: number,
 		y: number,
 		w: number,
 		h: number,
 		r: number,
-		color: string
+		color: Color
 	): void;
 	abstract drawSprite(
 		x: number,
@@ -63,8 +64,8 @@ export default abstract class BaseRenderer {
 		y: number,
 		maxWidth?: number
 	): void;
-	abstract setFillColor(color: string): void;
-	abstract setStrokeColor(color: string): void;
+	abstract setFillColor(color: Color): void;
+	abstract setStrokeColor(color: Color): void;
 	abstract setLineWidth(width: number): void;
 	abstract setBlendMode(blendMode: keyof typeof BlendModes): void;
 }

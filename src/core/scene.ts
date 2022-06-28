@@ -52,6 +52,7 @@ import GameObject from './gameobjects/gameObject';
 import Tileset from './map/tileset';
 import TileLayer from './map/tilelayer';
 import Timer from '../base/timer';
+import Color from './renderer/models/color';
 
 /**
  * @class Scene
@@ -174,6 +175,11 @@ export default class Scene extends Render {
 	 * @since 1.0.0-beta
 	 */
 	public add: {
+		color: (
+			value: number | string | CanvasGradient | CanvasPattern,
+			stroke?: number | string,
+			strokeWidth?: number
+		) => Color;
 		gameobject: {
 			misc: {
 				canvasModulate: (
@@ -181,7 +187,7 @@ export default class Scene extends Render {
 					y: number,
 					w: number,
 					h: number,
-					fillColor: string
+					color: Color
 				) => CanvasModulate;
 			};
 			existing: <t extends Duck.Types.Texture.Type>(
@@ -201,21 +207,16 @@ export default class Scene extends Render {
 				y: number,
 				w: number,
 				h: number,
-				fillColor: string
+				color: Color
 			) => Rect;
-			circle: (
-				x: number,
-				y: number,
-				r: number,
-				fillColor: string
-			) => Circle;
+			circle: (x: number, y: number, r: number, color: Color) => Circle;
 			roundRect: (
 				x: number,
 				y: number,
 				w: number,
 				h: number,
 				r: number,
-				fillColor: string
+				color: Color
 			) => RoundRect;
 		};
 		misc: {
@@ -236,7 +237,7 @@ export default class Scene extends Render {
 				w: number,
 				h: number,
 				r: number,
-				fillColor: string,
+				color: Color,
 				text: Text
 			) => Button;
 		};
@@ -252,7 +253,7 @@ export default class Scene extends Render {
 				x: number,
 				y: number,
 				r: number,
-				fillColor: string,
+				color: Color,
 				alpha: Duck.Types.Helper.AlphaRange
 			) => StaticLight;
 		};
@@ -304,7 +305,7 @@ export default class Scene extends Render {
 				rangeX: Duck.Types.ParticleEmitter.Range,
 				rangeY: Duck.Types.ParticleEmitter.Range,
 				particleAmount: number | undefined,
-				speedRange: [1, 1] | undefined,
+				speedRange: Duck.Types.ParticleEmitter.Range | undefined,
 				maxAge: number | undefined,
 				color: string | undefined
 			) => ExplosionEffect;
@@ -312,8 +313,8 @@ export default class Scene extends Render {
 				rangeX: Duck.Types.ParticleEmitter.Range,
 				rangeY: Duck.Types.ParticleEmitter.Range,
 				particleAmount: number | undefined,
-				speedRangeX: [-0.1, 0.4] | undefined,
-				speedRangeY: [-0.1, 0.4] | undefined,
+				speedRangeX: Duck.Types.ParticleEmitter.Range | undefined,
+				speedRangeY: Duck.Types.ParticleEmitter.Range | undefined,
 				maxAge: number | undefined,
 				color: '#2e2e2e' | undefined,
 				interval: 50 | undefined
@@ -329,7 +330,7 @@ export default class Scene extends Render {
 	public tools: {
 		loader: typeof Loader;
 		color: {
-			random: () => string;
+			random: () => Color;
 			randomWithAlpha: (alpha?: Duck.Types.Helper.AlphaRange) => string;
 			is: {
 				hex: (str: string) => boolean;
@@ -446,6 +447,17 @@ export default class Scene extends Render {
 		// methods
 
 		this.add = {
+			color: (
+				value: number | string | CanvasGradient | CanvasPattern,
+				stroke?: number | string,
+				strokeWidth?: number
+			) => {
+				if (stroke) {
+					return new Color(value, stroke, strokeWidth || 1);
+				}
+
+				return new Color(value);
+			},
 			gameobject: {
 				misc: {
 					canvasModulate: (
@@ -453,14 +465,14 @@ export default class Scene extends Render {
 						y: number,
 						w: number,
 						h: number,
-						fillColor: string
+						color: Color
 					) => {
 						const myCanvasModulate = new CanvasModulate(
 							x,
 							y,
 							w,
 							h,
-							fillColor,
+							color,
 							this.game,
 							this
 						);
@@ -505,35 +517,15 @@ export default class Scene extends Render {
 					y: number,
 					w: number,
 					h: number,
-					fillColor: string
+					color: Color
 				) => {
-					const rect = new Rect(
-						x,
-						y,
-						w,
-						h,
-						fillColor,
-						this.game,
-						this
-					);
+					const rect = new Rect(x, y, w, h, color, this.game, this);
 					this.displayList.add(rect);
 					this.physicsList.add(rect);
 					return rect;
 				},
-				circle: (
-					x: number,
-					y: number,
-					r: number,
-					fillColor: string
-				) => {
-					const circle = new Circle(
-						x,
-						y,
-						r,
-						fillColor,
-						this.game,
-						this
-					);
+				circle: (x: number, y: number, r: number, color: Color) => {
+					const circle = new Circle(x, y, r, color, this.game, this);
 					this.displayList.add(circle);
 					this.physicsList.add(circle);
 					return circle;
@@ -544,7 +536,7 @@ export default class Scene extends Render {
 					w: number,
 					h: number,
 					r: number,
-					fillColor: string
+					color: Color
 				) => {
 					const roundRect = new RoundRect(
 						x,
@@ -552,7 +544,7 @@ export default class Scene extends Render {
 						w,
 						h,
 						r,
-						fillColor,
+						color,
 						this.game,
 						this
 					);
@@ -596,7 +588,7 @@ export default class Scene extends Render {
 					w: number,
 					h: number,
 					r: number,
-					fillColor: string,
+					color: Color,
 					text: Text
 				) => {
 					const myButton = new Button(
@@ -606,7 +598,7 @@ export default class Scene extends Render {
 						w,
 						h,
 						r,
-						fillColor,
+						color,
 						text,
 						this.game,
 						this
@@ -639,14 +631,14 @@ export default class Scene extends Render {
 					x: number,
 					y: number,
 					r: number,
-					fillColor: string,
+					color: Color,
 					alpha: Duck.Types.Helper.AlphaRange
 				) => {
 					const myStaticLight = new StaticLight(
 						x,
 						y,
 						r,
-						fillColor,
+						color,
 						alpha,
 						this.game,
 						this
@@ -814,7 +806,9 @@ export default class Scene extends Render {
 		this.tools = {
 			loader: Loader,
 			color: {
-				random: randomColor,
+				random: () => {
+					return new Color(randomColor());
+				},
 				randomWithAlpha: (alpha?: Duck.Types.Helper.AlphaRange) =>
 					randomColorWithAlpha(alpha),
 				is: {

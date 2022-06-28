@@ -4,6 +4,7 @@ import Game from '../game';
 import Group from '../group/group';
 import clamp from '../math/clamp';
 import Vector2 from '../math/vector2';
+import Color from '../renderer/models/color';
 import Scene from '../scene';
 import Collider from './models/collider';
 import Hitbox from './models/hitbox';
@@ -298,7 +299,7 @@ export default class PhysicsBody<textureType extends Duck.Types.Texture.Type> {
 				w?: number,
 				h?: number,
 				offset = Vector2.ZERO,
-				debugColor?: string
+				debugColor?: Color
 			) => {
 				if (!this.game.config.physics?.enabled) {
 					new Debug.Error(

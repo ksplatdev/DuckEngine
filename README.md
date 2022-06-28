@@ -115,7 +115,7 @@ How to use DuckEngine with Typescript.
 1. Setup webpack/parcel and tsconfig.
 2. Import DuckEngine and Duck for types.
 
-Not working ? Add the following to your tsconfig.json
+Not working? Add the following to your tsconfig.json
 
 ```json
 {
